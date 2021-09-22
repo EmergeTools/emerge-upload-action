@@ -1,0 +1,22 @@
+name: "Emerge Upload"
+description: "Github Action for uploading an artifact to Emerge."
+author: "EmergeTools"
+inputs:
+  artifact_path:
+    description: "Relative path from the location of the main workspace runner to the artifact generated in CI."
+    required: true
+  emerge_api_key:
+    description: >
+      Emerge API token used to access the Emerge API. You can generate
+      an API key from your Profile page in the Emerge dashboard.
+      [Learn more about generating an Emerge API key](https://docs.emergetools.com/docs/fastlane#obtain-an-api-key)
+
+      Make sure to store this key using Github Action's encrypted secrets.
+      [Learn more about creating and using encrypted secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)
+    required: true
+  build_type:
+    description: "The name for the build type (e.g. 'release', 'debug', 'beta')"
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
