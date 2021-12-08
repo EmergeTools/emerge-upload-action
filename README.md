@@ -26,7 +26,7 @@ Add the API key to your secrets in your repository. **Do not leave this key in p
 ### Incorporate in your workflow
 
 Build your artifact in a step before the Emerge upload action. Pass the generated artifact's path as the `artifact_path`
-argument, and your Emerge API key secret as the `emerge_api_key` argument 
+argument, and your Emerge API key secret as the `emerge_api_key` argument:
 
 ```yaml
 name: Your workflow
@@ -45,7 +45,7 @@ jobs:
       - name: Generate Android release bundle
         run: ./gradlew bundleRelease
       - name: Upload artifact to Emerge
-        uses: EmergeTools/emerge-upload-action@v1.0.0
+        uses: EmergeTools/emerge-upload-action@v1.0.1
         with:
           artifact_path: ./app/build/outputs/bundle/release/app-release.aab
           emerge_api_key: ${{ secrets.EMERGE_API_KEY }}
