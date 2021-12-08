@@ -5,6 +5,7 @@ export type UploadInputs = {
   filename: string
   emergeApiKey: string
   sha: string
+  baseSha: string
   repoName: string
 
   // Required for PRs

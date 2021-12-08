@@ -12,6 +12,7 @@ async function run(): Promise<void> {
     prNumber: inputs.prNumber,
     branch: inputs.branchName,
     sha: inputs.sha,
+    baseSha: inputs.baseSha,
     repoName: inputs.repoName,
     buildType: inputs.buildType,
   };
