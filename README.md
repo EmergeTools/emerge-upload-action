@@ -45,7 +45,7 @@ jobs:
       - name: Generate Android release bundle
         run: ./gradlew bundleRelease
       - name: Upload artifact to Emerge
-        uses: EmergeTools/emerge-upload-action@v1.0.1
+        uses: EmergeTools/emerge-upload-action@v1.0.2
         with:
           artifact_path: ./app/build/outputs/bundle/release/app-release.aab
           emerge_api_key: ${{ secrets.EMERGE_API_KEY }}
