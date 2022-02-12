@@ -11,7 +11,7 @@ const github = require('@actions/github');
 const DEFAULT_PUSH_BEFORE_SHA = '0000000000000000000000000000000000000000';
 
 function getInputs(): UploadInputs {
-  core.info('Parsing inputs...');
+  core.info('Parsing inputs updated...');
 
   const artifactPath = core.getInput('artifact_path', { required: true });
   if (artifactPath === '') {
