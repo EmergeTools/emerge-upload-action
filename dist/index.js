@@ -6207,9 +6207,13 @@ const process = __importStar(__nccwpck_require__(765));
 const utils_1 = __nccwpck_require__(314);
 const core = __nccwpck_require__(186);
 const github = __nccwpck_require__(438);
+// The sha set for `before` on push events if the first push to a commit. This should not ever be the case if
+// pushing to main unless it's the initial commit.
+const DEFAULT_PUSH_BEFORE_SHA = '0000000000000000000000000000000000000000';
 function getInputs() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    core.info('Parsing inputs...');
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+    core.info(`github.context.payload: ${JSON.stringify(github.context.payload)}`);
+    core.info('Parsing inputs updated...');
     const artifactPath = core.getInput('artifact_path', { required: true });
     if (artifactPath === '') {
         core.setFailed('No artifact_path argument provided.');
@@ -6222,26 +6226,40 @@ function getInputs() {
     // of the commit that triggered this action.
     // Therefore, on a PR we need to explicitly get the head sha
     let sha;
+    let baseSha;
     let branchName;
+    core.info(`process.env.GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`);
+    const eventFile = fs.readFileSync((_a = process.env.GITHUB_EVENT_PATH) !== null && _a !== void 0 ? _a : '', {
+        encoding: 'utf8',
+    });
+    const eventFileJson = JSON.parse(eventFile);
+    core.info(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
+    core.info(`eventFileJson: ${JSON.stringify(eventFileJson)}`);
     if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
-        const eventFile = fs.readFileSync((_a = process.env.GITHUB_EVENT_PATH) !== null && _a !== void 0 ? _a : '', {
-            encoding: 'utf8',
-        });
-        const eventFileJson = JSON.parse(eventFile);
         sha = (_e = (_d = (_c = (_b = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.pull_request) === null || _b === void 0 ? void 0 : _b.head) === null || _c === void 0 ? void 0 : _c.sha) !== null && _d !== void 0 ? _d : process.env.GITHUB_SHA) !== null && _e !== void 0 ? _e : '';
-        branchName = (_f = process.env.GITHUB_HEAD_REF) !== null && _f !== void 0 ? _f : '';
+        baseSha = (_h = (_g = (_f = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.pull_request) === null || _f === void 0 ? void 0 : _f.base) === null || _g === void 0 ? void 0 : _g.sha) !== null && _h !== void 0 ? _h : '';
+        branchName = (_j = process.env.GITHUB_HEAD_REF) !== null && _j !== void 0 ? _j : '';
     }
-    else {
-        sha = (_g = process.env.GITHUB_SHA) !== null && _g !== void 0 ? _g : '';
-        const ref = (_h = process.env.GITHUB_REF) !== null && _h !== void 0 ? _h : '';
+    else if (process.env.GITHUB_EVENT_NAME === 'push') {
+        sha = (_k = process.env.GITHUB_SHA) !== null && _k !== void 0 ? _k : '';
+        // Get the SHA of the previous commit, which will be the baseSha in the case of a push event.
+        baseSha = (_l = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.before) !== null && _l !== void 0 ? _l : '';
+        if ((eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.baseRef) === null || baseSha === DEFAULT_PUSH_BEFORE_SHA) {
+            baseSha = '';
+        }
+        const ref = (_m = process.env.GITHUB_REF) !== null && _m !== void 0 ? _m : '';
         if (ref !== '') {
             const refSplits = ref.split('/');
             branchName = refSplits[refSplits.length - 1];
         }
     }
+    else {
+        core.setFailed(`Unsupported action trigger: ${process.env.GITHUB_EVENT_NAME}`);
+    }
     if (sha === '') {
         core.setFailed('Could not get SHA of the head branch.');
     }
+    // branchName is optional, so we won't fail if not present
     if (branchName === '') {
         // Explicitly set to undefined so we won't send an empty string to the Emerge API
         branchName = undefined;
@@ -6251,7 +6269,7 @@ function getInputs() {
         core.setFailed('Could not get repository name.');
     }
     // Required for PRs
-    const refName = (_j = process.env.GITHUB_REF) !== null && _j !== void 0 ? _j : '';
+    const refName = (_o = process.env.GITHUB_REF) !== null && _o !== void 0 ? _o : '';
     const prNumber = (0, utils_1.getPRNumber)(refName);
     if (refName.includes('pull') && !prNumber) {
         core.setFailed('Could not get prNumber for a PR triggered build.');
@@ -6271,6 +6289,7 @@ function getInputs() {
         filename,
         emergeApiKey,
         sha,
+        baseSha,
         repoName,
         prNumber,
         buildType,
@@ -6331,9 +6350,11 @@ function run() {
             prNumber: inputs.prNumber,
             branch: inputs.branchName,
             sha: inputs.sha,
+            baseSha: inputs.baseSha,
             repoName: inputs.repoName,
             buildType: inputs.buildType,
         };
+        core.info(`requestBody: ${JSON.stringify(requestBody)}`);
         const response = yield (0, node_fetch_1.default)('https://api.emergetools.com/upload', {
             method: 'post',
             headers: {

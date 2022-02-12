@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import * as process from 'process';
 import { UploadInputs } from './types';
-// TODO: Types
-import { PushEvent, PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 import { getPRNumber, getAbsoluteArtifactPath } from './utils';
 
 const core = require('@actions/core');
@@ -13,7 +11,7 @@ const github = require('@actions/github');
 const DEFAULT_PUSH_BEFORE_SHA = '0000000000000000000000000000000000000000';
 
 function getInputs(): UploadInputs {
-  core.info(`github.context.payload: ${github.context.payload}`);
+  core.info(`github.context.payload: ${JSON.stringify(github.context.payload)}`);
   core.info('Parsing inputs updated...');
 
   const artifactPath = core.getInput('artifact_path', { required: true });
@@ -38,7 +36,7 @@ function getInputs(): UploadInputs {
   });
   const eventFileJson = JSON.parse(eventFile);
   core.info(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
-  core.info(`eventFileJson: ${eventFileJson}`);
+  core.info(`eventFileJson: ${JSON.stringify(eventFileJson)}`);
   if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
     sha = eventFileJson?.pull_request?.head?.sha ?? process.env.GITHUB_SHA ?? '';
     baseSha = eventFileJson?.pull_request?.base?.sha ?? '';

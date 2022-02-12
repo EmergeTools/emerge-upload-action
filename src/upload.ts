@@ -17,6 +17,8 @@ async function run(): Promise<void> {
     buildType: inputs.buildType,
   };
 
+  core.info(`requestBody: ${JSON.stringify(requestBody)}`)
+
   const response = await fetch('https://api.emergetools.com/upload', {
     method: 'post',
     headers: {
