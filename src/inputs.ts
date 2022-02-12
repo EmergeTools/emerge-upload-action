@@ -33,6 +33,8 @@ function getInputs(): UploadInputs {
     encoding: 'utf8',
   });
   const eventFileJson = JSON.parse(eventFile);
+  core.info(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
+  core.info(`eventFileJson: ${eventFileJson}`);
   if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
     sha = eventFileJson?.pull_request?.head?.sha ?? process.env.GITHUB_SHA ?? '';
     baseSha = eventFileJson?.pull_request?.base?.sha ?? '';
