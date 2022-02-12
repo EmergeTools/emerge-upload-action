@@ -6,12 +6,7 @@ import { getPRNumber, getAbsoluteArtifactPath } from './utils';
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-// The sha set for `before` on push events if the first push to a commit. This should not ever be the case if
-// pushing to main unless it's the initial commit.
-const DEFAULT_PUSH_BEFORE_SHA = '0000000000000000000000000000000000000000';
-
 function getInputs(): UploadInputs {
-  core.info(`github.context.payload: ${JSON.stringify(github.context.payload)}`);
   core.info('Parsing inputs updated...');
 
   const artifactPath = core.getInput('artifact_path', { required: true });
@@ -26,17 +21,14 @@ function getInputs(): UploadInputs {
 
   // On PRs, the GITHUB_SHA refers to the merge commit instead
   // of the commit that triggered this action.
-  // Therefore, on a PR we need to explicitly get the head sha
+  // Therefore, on a PR we need to explicitly get the head sha from the event json data.
   let sha;
   let baseSha;
   let branchName;
-  core.info(`process.env.GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`);
   const eventFile = fs.readFileSync(process.env.GITHUB_EVENT_PATH ?? '', {
     encoding: 'utf8',
   });
   const eventFileJson = JSON.parse(eventFile);
-  core.info(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
-  core.info(`eventFileJson: ${JSON.stringify(eventFileJson)}`);
   if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
     sha = eventFileJson?.pull_request?.head?.sha ?? process.env.GITHUB_SHA ?? '';
     baseSha = eventFileJson?.pull_request?.base?.sha ?? '';
@@ -45,9 +37,6 @@ function getInputs(): UploadInputs {
     sha = process.env.GITHUB_SHA ?? '';
     // Get the SHA of the previous commit, which will be the baseSha in the case of a push event.
     baseSha = eventFileJson?.before ?? '';
-    if (eventFileJson?.baseRef === null || baseSha === DEFAULT_PUSH_BEFORE_SHA) {
-      baseSha = '';
-    }
 
     const ref = process.env.GITHUB_REF ?? '';
     if (ref !== '') {
@@ -60,6 +49,9 @@ function getInputs(): UploadInputs {
 
   if (sha === '') {
     core.setFailed('Could not get SHA of the head branch.');
+  }
+  if (baseSha === '') {
+    core.setFailed('Could not get SHA of the base branch.');
   }
   // branchName is optional, so we won't fail if not present
   if (branchName === '') {
