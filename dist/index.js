@@ -6209,7 +6209,7 @@ const core = __nccwpck_require__(186);
 const github = __nccwpck_require__(438);
 function getInputs() {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
-    core.info('Parsing inputs updated...');
+    core.info('Parsing inputs...');
     const artifactPath = core.getInput('artifact_path', { required: true });
     if (artifactPath === '') {
         core.setFailed('No artifact_path argument provided.');
