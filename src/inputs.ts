@@ -29,13 +29,13 @@ function getInputs(): UploadInputs {
   let sha;
   let baseSha;
   let branchName;
-  core.info(`process.env.GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`);
+  core.debug(`process.env.GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`);
   const eventFile = fs.readFileSync(process.env.GITHUB_EVENT_PATH ?? '', {
     encoding: 'utf8',
   });
   const eventFileJson = JSON.parse(eventFile);
-  core.info(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
-  core.info(`eventFileJson: ${eventFileJson}`);
+  core.debug(`process.env.GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
+  core.debug(`eventFileJson: ${eventFileJson}`);
   if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
     sha = eventFileJson?.pull_request?.head?.sha ?? process.env.GITHUB_SHA ?? '';
     baseSha = eventFileJson?.pull_request?.base?.sha ?? '';
