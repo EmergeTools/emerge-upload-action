@@ -17,6 +17,7 @@ async function run(): Promise<void> {
     buildType: inputs.buildType,
   };
 
+  core.debug(`requestBody: ${JSON.stringify(requestBody)}`);
   const response = await fetch('https://api.emergetools.com/upload', {
     method: 'post',
     headers: {
@@ -36,6 +37,7 @@ async function run(): Promise<void> {
   const file = fs.readFileSync(inputs.artifactPath);
 
   const headers = new Headers({ 'Content-Type': 'application/zip' });
+  core.info(`Uploading artifact at path ${inputs.artifactPath}...`);
   await fetch(uploadURL, {
     method: 'PUT',
     body: file,

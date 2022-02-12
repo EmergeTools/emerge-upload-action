@@ -1,6 +1,6 @@
 {
   "name": "emerge-upload-action",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Upload an artifact to Emerge.",
   "main": "dist/index.js",
   "scripts": {
