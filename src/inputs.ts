@@ -7,7 +7,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 function getInputs(): UploadInputs {
-  core.info('Parsing inputs updated...');
+  core.info('Parsing inputs...');
 
   const artifactPath = core.getInput('artifact_path', { required: true });
   if (artifactPath === '') {
