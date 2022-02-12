@@ -12,6 +12,7 @@
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
+    "@octokit/webhooks-definitions": "^3.67.3",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
