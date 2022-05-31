@@ -6228,7 +6228,7 @@ function getInputs() {
         encoding: 'utf8',
     });
     const eventFileJson = JSON.parse(eventFile);
-    if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
+    if (process.env.GITHUB_EVENT_NAME === 'pull_request' || process.env.GITHUB_EVENT_NAME === 'pull_request_target') {
         sha = (_e = (_d = (_c = (_b = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.pull_request) === null || _b === void 0 ? void 0 : _b.head) === null || _c === void 0 ? void 0 : _c.sha) !== null && _d !== void 0 ? _d : process.env.GITHUB_SHA) !== null && _e !== void 0 ? _e : '';
         baseSha = (_h = (_g = (_f = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.pull_request) === null || _f === void 0 ? void 0 : _f.base) === null || _g === void 0 ? void 0 : _g.sha) !== null && _h !== void 0 ? _h : '';
         branchName = (_j = process.env.GITHUB_HEAD_REF) !== null && _j !== void 0 ? _j : '';
@@ -6263,9 +6263,12 @@ function getInputs() {
     }
     // Required for PRs
     const refName = (_o = process.env.GITHUB_REF) !== null && _o !== void 0 ? _o : '';
-    const prNumber = (0, utils_1.getPRNumber)(refName);
+    var prNumber = (0, utils_1.getPRNumber)(refName);
     if (refName.includes('pull') && !prNumber) {
         core.setFailed('Could not get prNumber for a PR triggered build.');
+    }
+    if (!prNumber) {
+        prNumber = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.number;
     }
     // Optional args
     let buildType = core.getInput('build_type');
