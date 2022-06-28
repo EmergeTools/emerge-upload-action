@@ -29,7 +29,7 @@ function getInputs(): UploadInputs {
     encoding: 'utf8',
   });
   const eventFileJson = JSON.parse(eventFile);
-  if (process.env.GITHUB_EVENT_NAME === 'pull_request') {
+  if (process.env.GITHUB_EVENT_NAME === 'pull_request' || process.env.GITHUB_EVENT_NAME === 'pull_request_target') {
     sha = eventFileJson?.pull_request?.head?.sha ?? process.env.GITHUB_SHA ?? '';
     baseSha = eventFileJson?.pull_request?.base?.sha ?? '';
     branchName = process.env.GITHUB_HEAD_REF ?? '';
@@ -66,11 +66,13 @@ function getInputs(): UploadInputs {
 
   // Required for PRs
   const refName = process.env.GITHUB_REF ?? '';
-  const prNumber = getPRNumber(refName);
+  var prNumber = getPRNumber(refName);
   if (refName.includes('pull') && !prNumber) {
     core.setFailed('Could not get prNumber for a PR triggered build.');
   }
-
+  if (!prNumber) {
+    prNumber = eventFileJson?.number
+  }
   // Optional args
   let buildType = core.getInput('build_type');
   if (buildType === '') {
