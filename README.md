@@ -2,6 +2,9 @@
 
 Action to upload your build directly to Emerge for analysis.
 
+> [!IMPORTANT]
+> Emerge recommends using the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) as the primary integration point on Android. If using the Gradle Plugin, the GitHub action is not needed, as all upload functionality is built into the plugin.
+
 ## Usage
 
 The Emerge upload action should be run on any event that should trigger a size analysis. Examples of this are:
