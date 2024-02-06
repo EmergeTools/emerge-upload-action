@@ -1,9 +1,10 @@
-# Emerge upload action
-
-Action to upload your build directly to Emerge for analysis.
+# Emerge upload action - DEPRECATED
 
 > [!IMPORTANT]
-> Emerge recommends using the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) as the primary integration point on Android. If using the Gradle Plugin, the GitHub action is not needed, as all upload functionality is built into the plugin.
+> Emerge will no longer support this Github action and recommends using the [Emerge Fastlane plugin](https://docs.emergetools.com/docs/fastlane) or the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) as primary integration points on iOS/Android respectively.
+> If using the Fastlane/Gradle plugins, the GitHub action is unnecessary, as all upload functionality is built into the respective integrations.
+
+Action to upload your build directly to Emerge for analysis.
 
 ## Usage
 
@@ -17,8 +18,7 @@ descriptions.
 
 ### Create Emerge API key and add to secrets
 
-First, create an Emerge API key. You can create one from your [Emerge profile page](https://www.emergetools.com/profile)
-.
+First, create an Emerge API key. You can create one from your [Emerge profile page](https://www.emergetools.com/profile).
 
 ![Create Emerge API Key](./docs/api_key.png)
 
