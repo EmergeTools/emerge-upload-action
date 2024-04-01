@@ -43,10 +43,6 @@ function getInputs(): UploadInputs {
       const refSplits = ref.split('/');
       branchName = refSplits[refSplits.length - 1];
     }
-  } else if (process.env.GITHUB_EVENT_NAME === 'release') {
-    sha = process.env.GITHUB_SHA ?? '';
-    baseSha = '';
-    branchName = eventFileJson?.repository?.default_branch ?? '';
   } else {
     core.setFailed(`Unsupported action trigger: ${process.env.GITHUB_EVENT_NAME}`);
   }

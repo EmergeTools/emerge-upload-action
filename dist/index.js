@@ -33773,7 +33773,7 @@ const utils_1 = __nccwpck_require__(1314);
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 function getInputs() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     core.info('Parsing inputs...');
     const artifactPath = core.getInput('artifact_path', { required: true });
     if (artifactPath === '') {
@@ -33808,11 +33808,6 @@ function getInputs() {
             branchName = refSplits[refSplits.length - 1];
         }
     }
-    else if (process.env.GITHUB_EVENT_NAME === 'release') {
-        sha = (_o = process.env.GITHUB_SHA) !== null && _o !== void 0 ? _o : '';
-        baseSha = '';
-        branchName = (_q = (_p = eventFileJson === null || eventFileJson === void 0 ? void 0 : eventFileJson.repository) === null || _p === void 0 ? void 0 : _p.default_branch) !== null && _q !== void 0 ? _q : '';
-    }
     else {
         core.setFailed(`Unsupported action trigger: ${process.env.GITHUB_EVENT_NAME}`);
     }
@@ -33832,7 +33827,7 @@ function getInputs() {
         core.setFailed('Could not get repository name.');
     }
     // Required for PRs
-    const refName = (_r = process.env.GITHUB_REF) !== null && _r !== void 0 ? _r : '';
+    const refName = (_o = process.env.GITHUB_REF) !== null && _o !== void 0 ? _o : '';
     let prNumber = (0, utils_1.getPRNumber)(refName);
     if (refName.includes('pull') && !prNumber) {
         core.setFailed('Could not get prNumber for a PR triggered build.');
