@@ -43,6 +43,10 @@ function getInputs(): UploadInputs {
       const refSplits = ref.split('/');
       branchName = refSplits[refSplits.length - 1];
     }
+  } else if (process.env.GITHUB_EVENT_NAME === 'release') {
+    sha = process.env.GITHUB_SHA ?? '';
+    baseSha = '';
+    branchName = eventFileJson?.repository?.default_branch ?? '';
   } else {
     core.setFailed(`Unsupported action trigger: ${process.env.GITHUB_EVENT_NAME}`);
   }
@@ -66,12 +70,12 @@ function getInputs(): UploadInputs {
 
   // Required for PRs
   const refName = process.env.GITHUB_REF ?? '';
-  var prNumber = getPRNumber(refName);
+  let prNumber = getPRNumber(refName);
   if (refName.includes('pull') && !prNumber) {
     core.setFailed('Could not get prNumber for a PR triggered build.');
   }
   if (!prNumber) {
-    prNumber = eventFileJson?.number
+    prNumber = eventFileJson?.number;
   }
   // Optional args
   let buildType = core.getInput('build_type');

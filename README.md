@@ -1,7 +1,7 @@
-# Emerge upload action - DEPRECATED
+# Emerge upload action - (iOS future support only)
 
 > [!IMPORTANT]
-> Emerge will no longer support this Github action and recommends using the [Emerge Fastlane plugin](https://docs.emergetools.com/docs/fastlane) or the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) as primary integration points on iOS/Android respectively.
+> This action is no longer maintained for Android usage (please use the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) instead). As for iOS, if you don't have an existing CI setup or already use fastlane, we strongly recommend you use the [Emerge Fastlane plugin](https://docs.emergetools.com/docs/fastlane).
 > If using the Fastlane/Gradle plugins, the GitHub action is unnecessary, as all upload functionality is built into the respective integrations.
 
 Action to upload your build directly to Emerge for analysis.
@@ -36,21 +36,21 @@ name: Your workflow
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Generate Android release bundle
-        run: ./gradlew bundleRelease
+      - name: Generate iOS archive build
+        run: # generate release build, e.g. with xcodebuild
       - name: Upload artifact to Emerge
-        uses: EmergeTools/emerge-upload-action@v1.0.2
+        uses: EmergeTools/emerge-upload-action@v1.0.4
         with:
-          artifact_path: ./app/build/outputs/bundle/release/app-release.aab
+          artifact_path: path/to/app-release.xcarchive.zip
           emerge_api_key: ${{ secrets.EMERGE_API_KEY }}
           build_type: release # Optional, change if your workflow builds a specific type
 ```
@@ -59,4 +59,4 @@ After uploading, Emerge will run analysis on the uploaded build. If you haven't,
 our [Github documentation](https://docs.emergetools.com/docs/github).
 
 For more details about the upload process and Emerge's supported artifact types, see
-the [Emerge Uploading docs](https://docs.emergetools.com/docs/uploading-basics). 
+the [Emerge Uploading docs](https://docs.emergetools.com/docs/uploading-basics).
