@@ -1,5 +1,5 @@
 name: "Emerge Upload"
-description: "Github Action for uploading an artifact to Emerge."
+description: "Github Action for uploading an artifact to Emerge. Should only used for iOS use cases."
 author: "EmergeTools"
 inputs:
   artifact_path:
@@ -18,5 +18,5 @@ inputs:
     description: "The name for the build type (e.g. 'release', 'debug', 'beta')"
     required: false
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"

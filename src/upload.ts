@@ -28,7 +28,7 @@ async function run(): Promise<void> {
     body: JSON.stringify(requestBody),
   });
 
-  const data = await response.json();
+  const data: any = await response.json();
   const { uploadURL } = data;
   if (!uploadURL || uploadURL === '') {
     core.setFailed('No uploadURL found in upload response.');

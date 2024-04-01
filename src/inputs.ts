@@ -66,12 +66,12 @@ function getInputs(): UploadInputs {
 
   // Required for PRs
   const refName = process.env.GITHUB_REF ?? '';
-  var prNumber = getPRNumber(refName);
+  let prNumber = getPRNumber(refName);
   if (refName.includes('pull') && !prNumber) {
     core.setFailed('Could not get prNumber for a PR triggered build.');
   }
   if (!prNumber) {
-    prNumber = eventFileJson?.number
+    prNumber = eventFileJson?.number;
   }
   // Optional args
   let buildType = core.getInput('build_type');
