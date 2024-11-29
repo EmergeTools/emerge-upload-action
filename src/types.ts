@@ -14,4 +14,5 @@ export type UploadInputs = {
   // Optional args
   buildType: Nullable<string>
   branchName: Nullable<string>
+  appIdSuffix: Nullable<string>
 };

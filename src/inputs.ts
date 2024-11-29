@@ -80,6 +80,12 @@ function getInputs(): UploadInputs {
     buildType = undefined;
   }
 
+  let appIdSuffix = core.getInput('app_id_suffix');
+  if (appIdSuffix === '') {
+    // Explicitly set to undefined so we won't send an empty string to the Emerge API
+    appIdSuffix = undefined;
+  }
+
   // Pre-processing the filename
   const pathSplits = artifactPath.split('/');
   const filename = pathSplits[pathSplits.length - 1];
@@ -95,6 +101,7 @@ function getInputs(): UploadInputs {
     prNumber,
     buildType,
     branchName,
+    appIdSuffix,
   };
 }
 
