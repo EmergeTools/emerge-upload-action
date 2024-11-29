@@ -15,6 +15,7 @@ async function run(): Promise<void> {
     baseSha: inputs.baseSha,
     repoName: inputs.repoName,
     buildType: inputs.buildType,
+    appIdSuffix: inputs.appIdSuffix,
   };
 
   core.debug(`requestBody: ${JSON.stringify(requestBody)}`);
