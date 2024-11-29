@@ -53,7 +53,7 @@ jobs:
           artifact_path: path/to/app-release.xcarchive.zip
           emerge_api_key: ${{ secrets.EMERGE_API_KEY }}
           build_type: release # Optional, change if your workflow builds a specific type
-          app_id_suffix: release # Optional, change if needed, see https://docs.emergetools.com/docs/integrate-into-ci#which-builds-should-be-uploaded
+          app_id_suffix: snapshots # Optional, change if needed, see https://docs.emergetools.com/docs/integrate-into-ci#which-builds-should-be-uploaded
 ```
 
 After uploading, Emerge will run analysis on the uploaded build. If you haven't, set up Github comments by following
