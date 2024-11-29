@@ -1,4 +1,4 @@
-# Emerge upload action - (iOS future support only)
+# Emerge upload action
 
 > [!WARNING]
 > This action is **deprecated** and no longer maintained.\
