@@ -17,6 +17,9 @@ inputs:
   build_type:
     description: "The name for the build type (e.g. 'release', 'debug', 'beta')"
     required: false
+  app_id_suffix:
+    description: "The suffix for the app id (e.g. 'snapshots', 'debug', 'enterprise'), used to differentiate between different builds when uploading with the same SHA."
+    required: false
 runs:
   using: "node20"
   main: "dist/index.js"
