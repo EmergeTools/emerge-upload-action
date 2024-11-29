@@ -1,8 +1,10 @@
 # Emerge upload action - (iOS future support only)
 
-> [!IMPORTANT]
-> This action is no longer maintained for Android usage (please use the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) instead). As for iOS, if you don't have an existing CI setup or already use fastlane, we strongly recommend you use the [Emerge Fastlane plugin](https://docs.emergetools.com/docs/fastlane).
-> If using the Fastlane/Gradle plugins, the GitHub action is unnecessary, as all upload functionality is built into the respective integrations.
+> [!WARNING]
+> This action is **deprecated** and no longer maintained.\
+> For Android, use the [Emerge Gradle plugin](https://docs.emergetools.com/docs/gradle-plugin) instead.\
+> For iOS, we strongly recommend you use the [Emerge Fastlane plugin](https://docs.emergetools.com/docs/fastlane) if you don't have an existing CI setup or already use fastlane.\
+> Note: when using the Fastlane or Gradle plugins, the GitHub action is unnecessary, as all upload functionality is built into the respective integrations.
 
 Action to upload your build directly to Emerge for analysis.
 
